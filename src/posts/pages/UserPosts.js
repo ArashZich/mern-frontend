@@ -22,9 +22,17 @@ const UserPosts = () => {
     fetchPosts();
   }, [sendRequest, userId]);
 
+  const postDeletedHandler = (deletedPostId) => {
+    setLoadedPosts((prevPosts) =>
+      prevPosts.filter((post) => post.id !== deletedPostId)
+    );
+  };
+
   return (
     <React.Fragment>
-      {loadedPosts && <PostList items={loadedPosts} />}
+      {loadedPosts && (
+        <PostList items={loadedPosts} onDeletedPost={postDeletedHandler} />
+      )}
     </React.Fragment>
   );
 };

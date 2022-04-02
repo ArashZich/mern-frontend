@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../shared/components/FormElements/Input";
 import Button from "../../shared/components/FormElements/Button";
+import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 import { validatorRequire } from "../../shared/util/validators";
 import { useFrom } from "../../shared/hooks/form-hook";
 import { useHttpClient } from "../../shared/hooks/http-hook";
@@ -17,6 +18,7 @@ const NewPost = () => {
     {
       title: { value: "", isValid: false },
       description: { value: "", isValid: false },
+      image: { value: null, isValid: false },
     },
     false
   );
@@ -25,16 +27,13 @@ const NewPost = () => {
     event.preventDefault();
 
     try {
-      await sendRequest(
-        "http://localhost:5000/api/posts",
-        "POST",
-        JSON.stringify({
-          title: formState.inputs.title.value,
-          description: formState.inputs.description.value,
-          creator: auth.userId,
-        }),
-        { "Content-Type": "application/json" }
-      );
+      const formData = new FormData();
+      formData.append("title", formState.inputs.title.value);
+      formData.append("description", formState.inputs.description.value);
+      formData.append("creator", auth.userId);
+      formData.append("image", formState.inputs.image.value);
+
+      await sendRequest("http://localhost:5000/api/posts", "POST", formData);
 
       history("/");
     } catch (err) {
@@ -61,6 +60,11 @@ const NewPost = () => {
           errorText="لطفا توضیح معتبر وارد کنید."
           validators={[validatorRequire()]}
           onInput={inputHandler}
+        />
+        <ImageUpload
+          id="image"
+          onInput={inputHandler}
+          errorText="لطفا یک تصویر انتخاب کنید."
         />
         <Button type="submit" disabled={!formState.isValid}>
           افزودن

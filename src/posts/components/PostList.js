@@ -22,6 +22,7 @@ const PostList = (props) => {
               title={post.title}
               description={post.description}
               creatorId={post.creator}
+              onDelete={props.onDeletedPost}
             />
           );
         })}
