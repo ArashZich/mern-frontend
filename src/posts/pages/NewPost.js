@@ -4,6 +4,8 @@ import Button from "../../shared/components/FormElements/Button";
 import { validatorRequire } from "../../shared/util/validators";
 import { useFrom } from "../../shared/hooks/form-hook";
 
+import "./NewPost.css";
+
 const NewPost = () => {
   const [formState, inputHandler] = useFrom(
     {
@@ -19,27 +21,27 @@ const NewPost = () => {
   };
 
   return (
-    <div>
+    <div className="center main post">
       <form onSubmit={postSubmitHandler}>
         <Input
           id="title"
           element="input"
           type="text"
-          placeholder="Title"
-          errorText="Enter a valid title."
+          placeholder="عنوان"
+          errorText="لطفا عنوان معتبر وارد کنید."
           validators={[validatorRequire()]}
           onInput={inputHandler}
         />
         <Input
           id="description"
           element="textarea"
-          placeholder="description"
-          errorText="Enter a valid description."
+          placeholder="توضیح"
+          errorText="لطفا توضیح معتبر وارد کنید."
           validators={[validatorRequire()]}
           onInput={inputHandler}
         />
         <Button type="submit" disabled={!formState.isValid}>
-          Add Post
+          افزودن
         </Button>
       </form>
     </div>

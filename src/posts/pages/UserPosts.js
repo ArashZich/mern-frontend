@@ -5,9 +5,9 @@ import PostList from "../components/PostList";
 const posts = [
   {
     id: "p1",
-    title: "Post Title",
-    description: "Post Description",
-    image: "",
+    title: "عنوان پست",
+    description: "متن پست",
+    image: "../images/post-image.jpg",
     creator: "u1",
   },
   {

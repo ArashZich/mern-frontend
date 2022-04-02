@@ -6,7 +6,7 @@ const Users = () => {
     {
       id: "u1",
       name: "Arash",
-      image: "",
+      image: "../images/avatar.jpg",
       posts: 2,
     },
   ];

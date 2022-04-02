@@ -6,12 +6,12 @@ const UserItem = (props) => {
   return (
     <li>
       <Link to={`/${props.id}/posts`}>
-        <div>
+        <div className="user-avatar">
           <img src={props.image} alt={props.name} />
         </div>
         <div>
           <h2>{props.name}</h2>
-          <h3>{props.postCount}</h3>
+          <h3>تعداد پست‌ها: {props.postCount}</h3>
         </div>
       </Link>
     </li>

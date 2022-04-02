@@ -1,23 +1,38 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
+
+import { AuthContext } from "../../context/auth-context";
 import "./NavLinks.css";
 
 const NavLinks = (props) => {
+  const auth = useContext(AuthContext);
+
   return (
-    <div>
+    <div className="nav">
       <ul>
         <li>
-          <NavLink to="/">All Users</NavLink>
+          <NavLink to="/">صفحه اصلی</NavLink>
         </li>
-        <li>
-          <NavLink to="/u1/posts">My Posts</NavLink>
-        </li>
-        <li>
-          <NavLink to="/posts/new">Create Post</NavLink>
-        </li>
-        <li>
-          <NavLink to="/auth">Authenticate</NavLink>
-        </li>
+        {auth.isLoggedIn && (
+          <li>
+            <NavLink to="/u1/posts">پست‌های من</NavLink>
+          </li>
+        )}
+        {auth.isLoggedIn && (
+          <li>
+            <NavLink to="/posts/new">افزودن پست</NavLink>
+          </li>
+        )}
+        {!auth.isLoggedIn && (
+          <li>
+            <NavLink to="/auth">ورود و ثبت نام</NavLink>
+          </li>
+        )}
+        {auth.isLoggedIn && (
+          <li>
+            <button onClick={auth.logout}>خروج</button>
+          </li>
+        )}
       </ul>
     </div>
   );

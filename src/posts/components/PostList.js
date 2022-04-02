@@ -6,12 +6,12 @@ const PostList = (props) => {
   if (props.items.length === 0) {
     return (
       <div>
-        <h2>No posts found.</h2>
+        <h2>پست وجود ندارد.</h2>
       </div>
     );
   }
   return (
-    <div>
+    <div className="center main post">
       <ul>
         {props.items.map((post) => {
           return (

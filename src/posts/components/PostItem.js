@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "../../shared/components/FormElements/Button";
-
+import { AuthContext } from "../../shared/context/auth-context";
 import "./PostItem.css";
 
 const PostItem = (props) => {
+  const auth = useContext(AuthContext);
   return (
     <li>
       <div>
@@ -13,9 +14,7 @@ const PostItem = (props) => {
         <h2>{props.title}</h2>
         <h3>{props.description}</h3>
       </div>
-      <div>
-        <Button>Delete</Button>
-      </div>
+      <div>{auth.isLoggedIn && <Button>حذف</Button>}</div>
     </li>
   );
 };

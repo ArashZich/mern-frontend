@@ -6,13 +6,13 @@ const UsersList = (props) => {
   if (props.items.length === 0) {
     return (
       <div className="center">
-        <h2>User not found.</h2>
+        <h2>کاربری وجود ندارد.</h2>
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="center main">
       <ul>
         {props.items.map((user) => {
           return (

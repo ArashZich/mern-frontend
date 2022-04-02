@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -9,19 +9,56 @@ import {
 import Users from "./user/pages/Users";
 import NewPost from "./posts/pages/NewPost";
 import UserPosts from "./posts/pages/UserPosts";
+import Auth from "./user/pages/Auth";
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
+import { AuthContext } from "./shared/context/auth-context";
 
 const App = () => {
-  return (
-    <Router>
-      <MainNavigation />
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
+  }, []);
+
+  const logout = useCallback(() => {
+    setIsLoggedIn(false);
+  }, []);
+
+  let routes;
+
+  if (isLoggedIn) {
+    routes = (
       <Routes>
         <Route path="/" element={<Users />} exact />
         <Route path="/:userId/posts" element={<UserPosts />} exact />
         <Route path="/posts/new" element={<NewPost />} exact />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </Router>
+    );
+  } else {
+    routes = (
+      <Routes>
+        <Route path="/" element={<Users />} exact />
+        <Route path="/:userId/posts" element={<UserPosts />} exact />
+        <Route path="/auth" element={<Auth />} exact />
+        <Route path="*" element={<Navigate to="/auth" replace />} />
+      </Routes>
+    );
+  }
+
+  return (
+    <AuthContext.Provider
+      value={{
+        isLoggedIn: isLoggedIn,
+        login: login,
+        logout: logout,
+      }}
+    >
+      <Router>
+        <MainNavigation />
+        {routes}
+      </Router>
+    </AuthContext.Provider>
   );
 };
 
