@@ -1,28 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PostList from "../components/PostList";
-
-const posts = [
-  {
-    id: "p1",
-    title: "عنوان پست",
-    description: "متن پست",
-    image: "../images/post-image.jpg",
-    creator: "u1",
-  },
-  {
-    id: "p2",
-    title: "Post Title 2",
-    description: "Post Description 2",
-    image: "",
-    creator: "u2",
-  },
-];
+import { useHttpClient } from "../../shared/hooks/http-hook";
 
 const UserPosts = () => {
+  const [loadedPosts, setLoadedPosts] = useState();
+  const { sendRequest } = useHttpClient();
   const userId = useParams().userId;
-  const loadedPosts = posts.filter((post) => post.creator === userId);
-  return <PostList items={loadedPosts} />;
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/posts/user/${userId}`
+        );
+        setLoadedPosts(responseData.posts);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchPosts();
+  }, [sendRequest, userId]);
+
+  return (
+    <React.Fragment>
+      {loadedPosts && <PostList items={loadedPosts} />}
+    </React.Fragment>
+  );
 };
 
 export default UserPosts;

@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "../../shared/components/FormElements/Input";
 import Button from "../../shared/components/FormElements/Button";
 import { validatorRequire } from "../../shared/util/validators";
 import { useFrom } from "../../shared/hooks/form-hook";
+import { useHttpClient } from "../../shared/hooks/http-hook";
+import { AuthContext } from "../../shared/context/auth-context";
 
 import "./NewPost.css";
 
 const NewPost = () => {
+  const auth = useContext(AuthContext);
+  const { sendRequest } = useHttpClient();
+  const history = useNavigate();
   const [formState, inputHandler] = useFrom(
     {
       title: { value: "", isValid: false },
@@ -15,9 +21,25 @@ const NewPost = () => {
     false
   );
 
-  const postSubmitHandler = (event) => {
+  const postSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
+
+    try {
+      await sendRequest(
+        "http://localhost:5000/api/posts",
+        "POST",
+        JSON.stringify({
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value,
+          creator: auth.userId,
+        }),
+        { "Content-Type": "application/json" }
+      );
+
+      history("/");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
